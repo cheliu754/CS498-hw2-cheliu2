@@ -1,0 +1,13 @@
+{
+  "name": "hw2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/cheliu754/CS498-hw2-cheliu2.git",
+  "author": "Che Liu <cheliu754@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {},
+  "dependencies": {
+    "fastify": "^5.7.4"
+  }
+}
