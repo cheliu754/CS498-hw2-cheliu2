@@ -1,56 +1,17 @@
-import requests, uuid
+For Part IV, I wrote a Python script using the requests library.
 
-us_url = 'http://136.119.190.146:8080'
-eu_url = 'http://35.205.59.116:8080'
+Latency Measurement:
+I sent 15 POST requests to /register and 15 GET requests to /list for each instance (US and EU).
+For each request, I measured the response time using response.elapsed.total_seconds() and calculated the average latency in milliseconds.
 
 
-def test_lm(url):
-    ret = []
-    avg = 0
-    for i in range(15):
-        data = {
-            "username": "test_" + str(i)
-        }
-        response = requests.post(url + '/register', json=data)
-        elapsed = response.elapsed.total_seconds() * 1000
-        ret.append(elapsed)
-        avg += elapsed
-        
-    avg /= 15
-    return (ret, avg)
+Consistency Test:
+I ran 1000 iterations. In each iteration:
 
-def test_list(url):
-    ret = []
-    avg = 0
-    for i in range(15):
-        response = requests.get(url + '/list')
-        elapsed = response.elapsed.total_seconds() * 1000
-        ret.append(elapsed)
-        avg += elapsed
-        
-    avg /= 15
-    return (ret, avg)
+Generated a unique username using uuid.uuid4().
+Sent a POST request to /register on the US instance.
+Immediately sent a GET request to /list on the EU instance.
+Checked whether the new username appeared in the list.
 
-def test_1000():
-    counter = 0
-    for i in range(1000):
-        user_id = str(uuid.uuid4())
-        data = {
-            "username": user_id
-        }
-        requests.post(us_url + '/register', json=data)
-        response = requests.get(eu_url + '/list')
-        if user_id not in response.json()["users"]:
-            counter += 1
-            
-    return counter
-
-print(test_lm(us_url))
-
-print(test_lm(eu_url))
-
-print(test_list(us_url))
-
-print(test_list(eu_url))
-
-print(test_1000())
+I counted how many times the username was missing to measure replication behavior.
+The script(src/lm.py) was executed locally and results are reported in Analysis.txt.
