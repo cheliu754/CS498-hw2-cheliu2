@@ -1,0 +1,11 @@
+Average latency:
+/register US is 93.6549, /register EU is 472.3434
+/list US is 139.4435, /list EU is 394.2490
+
+PartB:
+there is 0 missing over 1000 tests
+
+Analysis:
+The latency results show that both /register and /list have higher response times on the EU instance compared to the US instance. This is mainly due to network distance, since the client is located in the US and requests to the EU server must travel a longer physical path. In addition, the Firestore database is deployed in the us-central1 region, so the EU instance may need to communicate across regions with the database, which further increases overall latency.
+
+For the consistency experiment, we observed 0 missing usernames out of 1000 trials when writing to the US instance and immediately reading from the EU instance. This suggests that replication between regions is very fast under our test conditions. Any potential replication delay is likely smaller than the time between the write completing and the subsequent read requests.
