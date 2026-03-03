@@ -10,7 +10,7 @@ const fastify = Fastify({
 const datastore = new Datastore()
 
 fastify.get("/greeting", (request, reply) => {
-  reply.send("<h1>Hello World!</h1>")
+  reply.type('text/html').send("<h1>Hello World!</h1>")
 })
 
 fastify.post("/register", async (request, reply) => {
